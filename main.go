@@ -38,7 +38,9 @@ func createdStudent(c echo.Context) error {
   if err := c.Bind(&student); err != nil {
     return err
   }
-  db.AddStudent(student)
+  if err := db.AddStudent(student); err != nil {
+    return c.String(http.StatusBadRequest, "Error to created student")
+  }
   return c.String(http.StatusOK, "Created students!")
 }
 

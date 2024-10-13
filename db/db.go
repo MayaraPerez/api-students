@@ -1,7 +1,6 @@
 package db
 
 import (
-	"fmt"
 	"log"
 
 	"gorm.io/driver/sqlite"
@@ -28,10 +27,11 @@ func Init() *gorm.DB {
 	return db
 }
 
-func AddStudent(student Student) {
+func AddStudent(student Student) error {
 	db := Init()
 
 	if result := db.Create(&student); result.Error != nil {
-		fmt.Println("Error to created students")
+		return result.Error
 	}
+	return nil
 }
