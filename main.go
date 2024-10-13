@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"github.com/rs/zerolog/log"
 
 	"github.com/MayaraPerez/api-students/api"
 )
@@ -12,7 +12,7 @@ func main() {
   server.Routes()
 
   if err := server.Start(); err != nil {
-    log.Fatal(err)
+    log.Fatal().Err(err).Msgf("Failed to start server", err.Error())
   }
 }
 
