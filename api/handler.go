@@ -18,7 +18,11 @@ func (api *API) GetStudents(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusNotFound, "Error to List students")
 	}
-	return c.JSON(http.StatusOK, students)
+
+	listOfStudents := map[string][]schema.StudentResponse{
+		"students": schema.NewStudentResponse(students)}
+
+	return c.JSON(http.StatusOK, listOfStudents)
 }
 
 func (api *API) createStudent(c echo.Context) error {
@@ -43,7 +47,7 @@ func (api *API) createStudent(c echo.Context) error {
 	if err := api.DB.AddStudent(student); err != nil {
 		return c.String(http.StatusInternalServerError, "Error to created student")
 	}
-	return c.String(http.StatusOK, "Created students!")
+	return c.JSON(http.StatusOK, student)
 }
 
 func (api *API) getStudent(c echo.Context) error {
