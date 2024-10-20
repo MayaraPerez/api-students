@@ -12,9 +12,8 @@ type Student struct {
 	CPF    int    `json:"cpf"`
 	Email  string `json:"email"`
 	Age    int    `json:"age"`
-	Active bool   `json:"registration"`
+	Active bool   `json:"active"`
 }
-
 type StudentResponse struct {
 	ID        int       `json:"id"`
 	CreatedAt time.Time `json:"createdAt"`
@@ -24,7 +23,7 @@ type StudentResponse struct {
 	CPF       int       `json:"cpf"`
 	Email     string    `json:"email"`
 	Age       int       `json:"age"`
-	Active    bool      `json:"registration"`
+	Active    bool      `json:"active"`
 }
 
 func NewStudentResponse(students []Student) []StudentResponse {

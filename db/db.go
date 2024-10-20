@@ -28,7 +28,6 @@ func Init() *gorm.DB {
 }
 
 func (s *StudentHandler) AddStudent(student schema.Student) error {
-
 	if result := s.DB.Create(&student); result.Error != nil {
 		return result.Error
 	}
@@ -40,6 +39,13 @@ func (s *StudentHandler) GetStudents() ([]schema.Student, error) {
 
 	err := s.DB.Find(&students).Error 
 		return students, err
+}
+
+func (s *StudentHandler) GetFilterStudents(active bool) ([]schema.Student, error) {
+	filterStudents := []schema.Student{}
+
+	err := s.DB.Where("active = ?", active).Find(&filterStudents) 
+		return filterStudents, err.Error
 }
 
 func (s *StudentHandler) GetStudent(id int) (schema.Student, error) {
