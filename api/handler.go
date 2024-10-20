@@ -7,8 +7,9 @@ import (
 
 	"gorm.io/gorm"
 
-	"github.com/MayaraPerez/api-students/db"
+	"github.com/MayaraPerez/api-students/schema"
 	"github.com/labstack/echo/v4"
+	"github.com/rs/zerolog/log"
 )
 
 // Handlers
@@ -21,12 +22,26 @@ func (api *API) GetStudents(c echo.Context) error {
 }
 
 func (api *API) createStudent(c echo.Context) error {
-	student := db.Student{}
-	if err := c.Bind(&student); err != nil {
+	studentRequest := StudentRequest{}
+	if err := c.Bind(&studentRequest); err != nil {
 		return err
 	}
+
+	if err := studentRequest.Validate(); err != nil {
+		log.Error().Err(err).Msgf("[api] error validation struct")
+		return c.String(http.StatusBadRequest, "Error to validation student")
+	}
+
+	student := schema.Student{
+		Name:   studentRequest.Name,
+		Email:  studentRequest.Email,
+		CPF:    studentRequest.CPF,
+		Age:    studentRequest.Age,
+		Active: *studentRequest.Active,
+	}
+
 	if err := api.DB.AddStudent(student); err != nil {
-		return c.String(http.StatusBadRequest, "Error to created student")
+		return c.String(http.StatusInternalServerError, "Error to created student")
 	}
 	return c.String(http.StatusOK, "Created students!")
 }
@@ -35,7 +50,7 @@ func (api *API) getStudent(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "failed to get student id ")
-	} 
+	}
 
 	student, err := api.DB.GetStudent(id)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -47,7 +62,6 @@ func (api *API) getStudent(c echo.Context) error {
 	return c.JSON(http.StatusOK, student)
 }
 
-
 func (api *API) updateStudent(c echo.Context) error {
 	//converto string para int
 	id, err := strconv.Atoi(c.Param("id"))
@@ -55,7 +69,7 @@ func (api *API) updateStudent(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "failed to get student id ")
 	}
 	//faco bind do que recebeu com a minha struct
-	receivedStudent := db.Student{}
+	receivedStudent := schema.Student{}
 	if err := c.Bind(&receivedStudent); err != nil {
 		return err
 	}
@@ -68,8 +82,8 @@ func (api *API) updateStudent(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "Failed to get student")
 	}
-	
-	//chamo a func que verifica os que existe com o que veio 
+
+	//chamo a func que verifica os que existe com o que veio
 	student := updateVerify(receivedStudent, updateStudent)
 
 	//passo o student oara fun que vai fazer o update
@@ -94,7 +108,7 @@ func (api *API) deleteStudent(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "Failed to delete student")
 	}
-	
+
 	//passo o student oara fun que vai fazer o update
 	if err := api.DB.DeleteStudent(deleteStudent); err != nil {
 		return c.String(http.StatusInternalServerError, "Failed to delete student")
@@ -103,7 +117,7 @@ func (api *API) deleteStudent(c echo.Context) error {
 	return c.JSON(http.StatusOK, deleteStudent)
 }
 
-func updateVerify(receivedStudent, student db.Student) db.Student {
+func updateVerify(receivedStudent, student schema.Student) schema.Student {
 	if receivedStudent.Name != "" {
 		student.Name = receivedStudent.Name
 	}
@@ -119,5 +133,5 @@ func updateVerify(receivedStudent, student db.Student) db.Student {
 	if receivedStudent.Active != student.Active {
 		student.Active = receivedStudent.Active
 	}
-	return student 
+	return student
 }
