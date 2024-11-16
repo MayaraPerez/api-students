@@ -1,0 +1,207 @@
+definitions:
+  api.StudentRequest:
+    properties:
+      age:
+        type: integer
+      cpf:
+        type: integer
+      email:
+        type: string
+      name:
+        type: string
+      registration:
+        description: using bool as a pointer to forcer true/false
+        type: boolean
+    type: object
+  schema.Student:
+    properties:
+      active:
+        type: boolean
+      age:
+        type: integer
+      cpf:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  schema.StudentResponse:
+    properties:
+      active:
+        type: boolean
+      age:
+        type: integer
+      cpf:
+        type: integer
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /students:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of students, optionally filtered by active status
+      parameters:
+      - description: Filter by active status
+        in: query
+        name: active
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              items:
+                $ref: '#/definitions/schema.StudentResponse'
+              type: array
+            type: object
+        "404":
+          description: Error to List students
+          schema:
+            type: string
+      summary: Get students
+      tags:
+      - students
+    post:
+      consumes:
+      - application/json
+      description: Add a new student to the database
+      parameters:
+      - description: Student data
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/api.StudentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Student'
+        "400":
+          description: Error to validation student
+          schema:
+            type: string
+        "500":
+          description: Error to created student
+          schema:
+            type: string
+      summary: Create a student
+      tags:
+      - students
+  /students/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a student from the database by ID
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Student'
+        "404":
+          description: Student not found
+          schema:
+            type: string
+        "500":
+          description: Failed to delete student
+          schema:
+            type: string
+      summary: Delete a student
+      tags:
+      - students
+    get:
+      consumes:
+      - application/json
+      description: Retrieve details of a student by ID
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Student'
+        "404":
+          description: Student not found
+          schema:
+            type: string
+        "500":
+          description: Failed to get student
+          schema:
+            type: string
+      summary: Get a student
+      tags:
+      - students
+    put:
+      consumes:
+      - application/json
+      description: Update details of an existing student
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated student data
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/schema.Student'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Student'
+        "400":
+          description: Failed to get student id
+          schema:
+            type: string
+        "404":
+          description: Student not found
+          schema:
+            type: string
+        "500":
+          description: Failed to save student
+          schema:
+            type: string
+      summary: Update a student
+      tags:
+      - students
+swagger: "2.0"

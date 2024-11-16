@@ -11,8 +11,15 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
 )
-
-// Handlers
+// @Summary Get students
+// @Description Retrieve a list of students, optionally filtered by active status
+// @Tags students
+// @Accept json
+// @Produce json
+// @Param active query boolean false "Filter by active status"
+// @Success 200 {object} map[string][]schema.StudentResponse
+// @Failure 404 {string} string "Error to List students"
+// @Router /students [get]
 func (api *API) GetStudents(c echo.Context) error {
 	students, err := api.DB.GetStudents()
 	if err != nil {
@@ -34,6 +41,16 @@ func (api *API) GetStudents(c echo.Context) error {
 	return c.JSON(http.StatusOK, listOfStudents)
 }
 
+// @Summary Create a student
+// @Description Add a new student to the database
+// @Tags students
+// @Accept json
+// @Produce json
+// @Param student body StudentRequest true "Student data"
+// @Success 200 {object} schema.Student
+// @Failure 400 {string} string "Error to validation student"
+// @Failure 500 {string} string "Error to created student"
+// @Router /students [post]
 func (api *API) createStudent(c echo.Context) error {
 	studentRequest := StudentRequest{}
 	if err := c.Bind(&studentRequest); err != nil {
@@ -59,6 +76,16 @@ func (api *API) createStudent(c echo.Context) error {
 	return c.JSON(http.StatusOK, student)
 }
 
+// @Summary Get a student
+// @Description Retrieve details of a student by ID
+// @Tags students
+// @Accept json
+// @Produce json
+// @Param id path int true "Student ID"
+// @Success 200 {object} schema.Student
+// @Failure 404 {string} string "Student not found"
+// @Failure 500 {string} string "Failed to get student"
+// @Router /students/{id} [get]
 func (api *API) getStudent(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -75,6 +102,18 @@ func (api *API) getStudent(c echo.Context) error {
 	return c.JSON(http.StatusOK, student)
 }
 
+// @Summary Update a student
+// @Description Update details of an existing student
+// @Tags students
+// @Accept json
+// @Produce json
+// @Param id path int true "Student ID"
+// @Param student body schema.Student true "Updated student data"
+// @Success 200 {object} schema.Student
+// @Failure 400 {string} string "Failed to get student id"
+// @Failure 404 {string} string "Student not found"
+// @Failure 500 {string} string "Failed to save student"
+// @Router /students/{id} [put]
 func (api *API) updateStudent(c echo.Context) error {
 	//converto string para int
 	id, err := strconv.Atoi(c.Param("id"))
@@ -106,6 +145,16 @@ func (api *API) updateStudent(c echo.Context) error {
 	return c.JSON(http.StatusOK, updateStudent)
 }
 
+// @Summary Delete a student
+// @Description Remove a student from the database by ID
+// @Tags students
+// @Accept json
+// @Produce json
+// @Param id path int true "Student ID"
+// @Success 200 {object} schema.Student
+// @Failure 404 {string} string "Student not found"
+// @Failure 500 {string} string "Failed to delete student"
+// @Router /students/{id} [delete]
 func (api *API) deleteStudent(c echo.Context) error {
 	//converto string para int
 	id, err := strconv.Atoi(c.Param("id"))

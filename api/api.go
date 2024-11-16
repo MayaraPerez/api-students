@@ -4,6 +4,9 @@ import (
 	"github.com/MayaraPerez/api-students/db"
 	"github.com/labstack/echo/v4/middleware"
 
+	echoSwagger "github.com/swaggo/echo-swagger" 
+	_ "github.com/MayaraPerez/api-students/docs" 
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -41,5 +44,6 @@ func (api *API) Routes() {
 	api.Echo.GET("/students/:id", api.getStudent)
 	api.Echo.PUT("/students/:id", api.updateStudent)
 	api.Echo.DELETE("/students/:id", api.deleteStudent)
+	api.Echo.GET("/swagger/*", echoSwagger.WrapHandler)
 }
 
