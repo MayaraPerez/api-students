@@ -2,20 +2,26 @@
 # API Students
 This is a simple API to manage student data.
 
-## Estrutura do Projeto
-main.go:    Arquivo principal que inicializa o servidor.
-models:     Contém as definições dos modelos de dados.
-routes:     Define as rotas da API.
-config:     Configurações do banco de dados e outras variáveis de ambiente.
-swagger:    Documentação gerada automaticamente usando o Swagger.
+## Project Structure
 
-### Tecnologias utilizadas
+- **`main.go`**: Arquivo principal que inicializa o servidor e configura o roteamento da API.
+  
+- **`models/`**: Contém os modelos de dados usados pela aplicação, como a definição de estudantes e suas relações com o banco de dados.
+  
+- **`routes/`**: Aqui estão definidos os endpoints da API. Cada rota é mapeada para um manipulador de requisições que define a lógica de negócios.
+  
+- **`config/`**: Arquivos de configuração que lidam com o banco de dados e outras variáveis de ambiente, como variáveis de configuração para o ambiente de produção ou desenvolvimento.
+  
+- **`swagger/`**: Contém a documentação gerada automaticamente usando o Swagger, que fornece uma interface visual para testar as rotas da API.
+
+
+## Technologies used:
 - Go
 - GORM
 - SQLite
 - Swagger
 
-## Routes
+## Routes:
 ### `GET /students`
 - **Description**:  Retrieve a list of all students.
 - **Response**:     A list of students, including their details.
@@ -47,31 +53,31 @@ swagger:    Documentação gerada automaticamente usando o Swagger.
 - **Parameters**:  `id` (integer): The ID of the student.
 - **Request Body**: The deleted student's details.
 
-### STEPS TO RUN
-## Clonar o Repository
+## STEPS TO RUN
+### Clonar o Repository:
 ````
 https://github.com/MayaraPerez/api-students.git
 ````
 
-## Instalando dependências:
-Depois de clonar, entre no diretório do projeto e instale as dependências necessárias.
-Instale as dependências do Go: Se você não tiver o Go instalado
-Baixe as dependências do projeto: Dentro do diretório do projeto, rode:
+### Installing dependencies:
+After cloning, enter the project directory and install the necessary dependencies.
+Install Go dependencies: If you don't have Go installed
+Download the project dependencies: Inside the project directory, run:
 
 - [Go](https://go.dev/doc/install) 1.20
 - [Swagger](https://github.com/swaggo/gin-swagger)
 
-## Como rodar o projeto
-No diretório principal, rode o comando:
+### How to run the project:
+In the main directory, run the command:
 
 ```
 make run
 ```
 
-## Rotas da API
-As rotas da API estão documentadas usando o Swagger. Para entender com detalhes sobre as rotas, rode a aplicação e consulte a rota `/swagger/index.html`.
+### API Routes:
+API routes are documented using Swagger.<br>
+To understand in detail about the routes, run the application and see the `/swagger/index.html` route.
 
-
-## Próximos passos
-- Adicionar testes
-- Rodar o projeto com Docker
+### Next steps:
+- Add tests
+- Run the project with Docker
