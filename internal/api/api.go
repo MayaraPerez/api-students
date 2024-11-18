@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/MayaraPerez/api-students/db"
+	"github.com/MayaraPerez/api-students/internal/db"
 	"github.com/labstack/echo/v4/middleware"
 
 	echoSwagger "github.com/swaggo/echo-swagger" 

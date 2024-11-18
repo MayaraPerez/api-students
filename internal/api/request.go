@@ -7,7 +7,7 @@ type StudentRequest struct {
 	CPF    int    `json:"cpf"`
 	Email  string `json:"email"`
 	Age    int    `json:"age"`
-	Active *bool   `json:"registration"` //using bool as a pointer to forcer true/false
+	Active *bool  `json:"active"` //using bool as a pointer to forcer true/false
 }
 
 func msgValidationError(param, typ string) error {

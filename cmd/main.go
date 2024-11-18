@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/rs/zerolog/log"
-	"github.com/MayaraPerez/api-students/api"
+	"github.com/MayaraPerez/api-students/internal/api"
 )
 
 func main() {

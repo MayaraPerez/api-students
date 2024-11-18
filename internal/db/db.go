@@ -1,19 +1,28 @@
 package db
 
 import (
-	"github.com/MayaraPerez/api-students/schema"
+	"github.com/MayaraPerez/api-students/internal/schema"
 	"github.com/rs/zerolog/log"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
+
 type StudentHandler struct {
 	DB *gorm.DB
 }
 
-func NewStudentHandle( db *gorm.DB) *StudentHandler  {
+func NewStudentHandle( db *gorm.DB) *StudentHandler{
 	return &StudentHandler{DB: db}
+}
+
+func NewInMemoryDb() (*gorm.DB, error) {
+	orm, err := gorm.Open(sqlite.Open("file::memory:"), &gorm.Config{})
+	if err != nil {
+		return nil, err
+	}
+	return orm, nil
 }
 
 func Init() *gorm.DB {
